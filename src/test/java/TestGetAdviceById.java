@@ -35,7 +35,7 @@ public class TestGetAdviceById {
     public void testGetAdviceById() {
         when()
                 .get("https://api.adviceslip.com/advice/" + id)
-                .then()
+        .then()
                 .statusCode(200)
                 .body("slip.advice", equalTo(expectedAdvice));
     }

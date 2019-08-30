@@ -1,7 +1,5 @@
 package Hello;
 
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -10,7 +8,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static io.restassured.RestAssured.when;
+import static io.restassured.module.webtestclient.RestAssuredWebTestClient.given;
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(Parameterized.class)
@@ -34,10 +32,13 @@ public class TestGreeting {
 
     @Test
     public void testGetAdviceById() {
-        when()
-                .get("http://localhost:8080/greeting?name=" + name)
-                .then()
-                .statusCode(200)
-                .body("content", equalTo(expectedGreeting));
+        given().
+                standaloneSetup(new GreetingController()).
+                param("name", name).
+        when().
+                get("/greeting").
+        then().
+                statusCode(200).
+                body("content", equalTo(expectedGreeting));
     }
 }
